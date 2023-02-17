@@ -1,0 +1,24 @@
+{
+  "version": "1.2",
+  "dbname": "orf_trans",
+  "dbtype": "Protein",
+  "db-version": 5,
+  "description": "Yeast Open Reading Frames (Exome)",
+  "number-of-letters": 2929407,
+  "number-of-sequences": 5916,
+  "last-updated": "2023-02-08T19:33:00",
+  "number-of-volumes": 1,
+  "bytes-total": 5617247,
+  "bytes-to-cache": 2982772,
+  "files": [
+    "orf_trans.pdb",
+    "orf_trans.phr",
+    "orf_trans.pin",
+    "orf_trans.pog",
+    "orf_trans.pos",
+    "orf_trans.pot",
+    "orf_trans.psq",
+    "orf_trans.ptf",
+    "orf_trans.pto"
+  ]
+}
