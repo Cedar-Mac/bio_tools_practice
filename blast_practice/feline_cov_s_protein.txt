@@ -1,0 +1,8 @@
+# BLASTN 2.13.0+
+# Query: 
+# Database: feline_cov
+# Fields: query acc.ver, subject acc.ver, % identity, alignment length, mismatches, gap opens, q. start, q. end, s. start, s. end, evalue, bit score
+# 2 hits found
+Query_1	lcl|DQ848678.1_cds_ABI14448.1_3	100.000	793	0	0	179	971	1	793	0.0	1465
+Query_1	lcl|DQ848678.1_cds_ABI14446.1_1	98.883	179	1	1	5	182	19904	20082	4.12e-89	318
+# BLAST processed 1 queries
