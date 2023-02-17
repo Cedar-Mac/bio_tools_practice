@@ -1,0 +1,9 @@
+name: quality_checks_env
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - trimmomatic
+  - fastqc
+prefix: /opt/homebrew/Caskroom/miniforge/base/envs/quality_checks_env

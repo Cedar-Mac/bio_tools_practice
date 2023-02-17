@@ -1,0 +1,68 @@
+
+### Stage 1
+Download archive: SRR15712950 (microbiome genome from alder root nodules) from ncbi SRA database: https://www.ncbi.nlm.nih.gov/sra
+
+### Stage 2
+Install the SRA toolkit into $HOME/local/bin/ and add to PATH
+Check that fastq_dump works correctly following the setup from the SRA toolkit README: https://github.com/ncbi/sra-tools/wiki/02.-Installing-SRA-Toolkit
+Use fastq_dump --split-3 alder_nodules to split the archive into two files:
+    alder_nodules_1.fastq
+    alder_nodules_2.fastq
+alder_nodules_1 is the forward reads, and alder_nodules_2 is the reverse reads.
+
+
+### Stage 3
+Create conda environment. Install fastqc application through conda channel bioconda.
+Use fastqc to check the quality of the forward reads. 
+%GC content has an additional peak, unexpected for the metagenome.
+Adapter contamination is fairly high.
+
+### Stage 4 
+Trim illumina adapter sequences from sequences. Adapter forward and reverse reads in the file: TruSeq3-PE.fa
+Crop to 220 reads.
+    trimmomatic PE -phred64 -trimlog trimlog.txt -basein alder_nodule_1.fastq \
+    -baseout alder_nodule_filtered.fastq CROP:220 ILLUMINACLIP:./TruSeq3-PE.fa:2:30:10
+
+### Stage 5
+Check the quality of the trimmed forward read paired sequences and compare to the pre trimmed using fastqc
+
+
+### Stage 6
+Methods
+In an effort to better understand the options for preprocessing DNA sequence data, we have implemented 
+three bioinformatics tools: fastq_dump from the SRA-toolkit [1], fastqc [2], and trimmomatic [3]. These
+tools have been used in combination in the following pipeline:
+    1. Access data from the SRA database [1] and unpack the archive using fastq_dump.
+    2. Gain a basic understanding of the quality of the reads in the sample data using fastqc [2].
+    3. Trim the sequence read using trimmomatic, paying special attention to issues uncovered from the 
+    quality check of fastqc.
+    4. Check improvements in the quality of the reads after using ILLUMINACLIP to remove adapter sequences.
+
+Results
+After downloading the data and running a quality precheck we found the following issues in the read 
+quality: %GC content has an additional peak, unexpected for the metagenome, and adapter contamination was
+fairly high. 
+    trimmomatic PE -phred64 -trimlog trimlog.txt -basein alder_nodule_1.fastq \
+    -baseout alder_nodule_filtered.fastq CROP:220 ILLUMINACLIP:./TruSeq3-PE.fa:2:30:10
+Running the above trimmomatic command [3] helped to cut Illumina adapter sequences and the crop removed 
+potential contamination at the end of each read and standardized read length. 
+A final check of the paired forward read sequence after trimming revealed a substantial improvement in 
+the quality of the reads, having removed only 87 reads.
+
+Discussion
+While the pipeline used for preprocessing of DNA sequence data will depend on the source of the read data,
+many of the tools used in this pipeline will be crucial in understanding the quality of the read data, 
+and making any necessary changes. Fastqc [2] provides a clear snapshot of read quality, and trimmomatic [3]
+provides a highly flexible framework for trimming low quality reads as well as possible contamination from
+other organisms or the machine adapter sequences.
+
+References
+1) Leinonen, R., Sugawara, H., Shumway, M., & International Nucleotide Sequence Database Collaboration 
+    (2011). The sequence read archive. Nucleic acids research, 39, D19–D21. https://doi.org/10.1093/nar/gkq1019
+
+2) Andrews, S. (2010). FastQC:  A Quality Control Tool for High Throughput Sequence Data [Online]. 
+    Available online at: http://www.bioinformatics.babraham.ac.uk/projects/fastqc/
+
+3) Bolger, A. M., Lohse, M., & Usadel, B. (2014). Trimmomatic: a flexible trimmer for Illumina sequence 
+    data. Bioinformatics (Oxford, England), 30(15), 2114–2120. 
+    https://doi.org/10.1093/bioinformatics/btu170
